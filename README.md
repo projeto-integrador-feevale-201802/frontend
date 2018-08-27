@@ -1,3 +1,26 @@
+# frontend
+
+## Project setup
+```
+npm install
+```
+
+### Compiles and hot-reloads for development
+```
+npm run serve
+```
+
+### Compiles and minifies for production
+```
+npm run build
+```
+
+### Lints and fixes files
+```
+npm run lint
+```
+---
+
 # Login
 Campos para email e senha. Botão de login terá texto "Entrar" e ao clicado vai chamar o endpoint de login com os campos email e senha. A senha deve possuir pelo menos 4 caracteres. Erros de validação serão exibidos em vermelho entre os campos e o botão. Em caso de sucesso, salva um cookie com o token de autenticação para ser reenviado nas requisições posteriores.
 
