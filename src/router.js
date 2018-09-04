@@ -1,8 +1,18 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Home from './views/Home.vue';
+import Login from './views/Login.vue';
+import CadastrarUsuario from './views/CadastrarUsuario.vue';
 
 Vue.use(Router);
+
+function somenteAutenticado(to, from, next) {
+  if (window.localStorage.getItem('auth-bolao')) {
+    next();
+  } else {
+    next('/login');
+  }
+}
 
 export default new Router({
   mode: 'history',
@@ -12,14 +22,17 @@ export default new Router({
       path: '/',
       name: 'home',
       component: Home,
+      beforeEnter: somenteAutenticado,
     },
     {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/About.vue'),
+      path: '/login',
+      name: 'login',
+      component: Login,
+    },
+    {
+      path: '/cadastrar-usuario',
+      name: 'cadastrar usuario',
+      component: CadastrarUsuario,
     },
   ],
 });
