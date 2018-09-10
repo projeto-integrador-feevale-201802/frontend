@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="container">
     <h1>Login</h1>
 
     <form class="login" @submit.prevent="fazerLogin">
@@ -9,10 +9,12 @@
 
       <error-box v-if="erros.length" :erros="erros" />
 
-      <button type="submit">Entrar</button>
+      <button type="submit" class="btn btn-primary entrar">Entrar</button>
     </form>
 
-    <a href="/cadastrar-usuario">Criar meu cadastro</a>
+    <div class="centralizar-texto">
+      <a href="/cadastrar-usuario">Criar meu cadastro</a>
+    </div>
   </div>
 </template>
 
@@ -45,7 +47,21 @@ export default {
 </script>
 
 <style scoped>
+#container {
+  width: 320px;
+  margin: 0 auto;
+}
+
 .erro {
   color: red;
+}
+
+.entrar {
+  display: block;
+  margin: 25px auto;
+}
+
+.centralizar-texto {
+  text-align: center;
 }
 </style>

@@ -1,7 +1,9 @@
 <template>
-  <div>
-    <label class="input-line">{{texto}}</label>
-    <input :type="tipo" v-model="valor">
+  <div class="form-group">
+    <label>
+      {{texto}}
+      <input :type="tipo" class="form-control" v-model="valor">
+    </label>
   </div>
 </template>
 
@@ -21,6 +23,8 @@ export default {
 }
 </script>
 
-<style>
-
+<style scopped>
+label {
+  width: 100%;
+}
 </style>

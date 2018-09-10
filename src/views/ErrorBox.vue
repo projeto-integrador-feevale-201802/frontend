@@ -1,13 +1,9 @@
 <template>
-    <div id="error-box">
-      <span v-if="typeof erros.length === 1" class="erro">
-        {{erros[0]}}
-      </span>
-      <ul v-else>
-        <li v-for="(erro, i) in erros" :key="i">
-          <span class="erro">{{erro}}</span>
-        </li>
-      </ul>
+    <div class="alert alert-danger" role="alert">
+      <div v-for="(erro, i) in erros" :key="i">
+        <span>·</span> {{erro}}
+        <br v-if="i !== erros.length"/>
+      </div>
   </div>
 </template>
 
@@ -17,8 +13,8 @@ export default {
 }
 </script>
 
-<style>
-#error-box .erro {
-  color: red;
+<style scoped>
+span {
+  font-weight: 900;
 }
 </style>
