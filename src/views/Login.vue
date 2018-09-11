@@ -38,7 +38,7 @@ export default {
   methods: {
     ...mapActions(['autenticar']),
     fazerLogin() {
-      this.autenticar({ email: this.email, senha: this.senha })
+      this.autenticar({ 'email' : this.email, 'password' : this.senha })
         .then(() => this.$router.push('/'))
         .catch(erros => this.erros = erros);
     },
