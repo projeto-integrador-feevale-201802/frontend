@@ -3,22 +3,9 @@
     <h1>Cadastrar</h1>
 
     <form class="login" @submit.prevent="cadastrarUsuario">
+      <input-box texto="E-mail" tipo="email" v-model="email" />
       <input-box texto="Nome" tipo="text" v-model="nome" />
       <input-box texto="Senha" tipo="password" v-model="senha" />
-      <input-box texto="E-mail" tipo="email" v-model="email" />
-
-      <div>
-        <button type="button" class="btn btn-default" @click="$refs.arq.click()">Avatar</button>
-        <span v-if="nomeAvatar" class="nome-avatar">{{nomeAvatar}}</span>
-      </div>
-
-      <input
-        type="file"
-        @change="pegarArquivo($event.target.files[0])"
-        accept="image/*"
-        class="escondido"
-        ref="arq"
-      >
 
       <error-box v-if="erros.length" :erros="erros" />
 
@@ -37,9 +24,9 @@
 </template>
 
 <script>
-import InputBox from './InputBox.vue';
-import ErrorBox from './ErrorBox.vue';
-import { mapActions } from 'vuex';
+import InputBox from './InputBox.vue'
+import ErrorBox from './ErrorBox.vue'
+import { mapActions } from 'vuex'
 
 export default {
   components: {
@@ -51,11 +38,9 @@ export default {
       nome: '',
       email: '',
       senha: '',
-      avatar: null,
-      nomeAvatar: '',
       erros: [],
       exibirModalSucesso: false
-    };
+    }
   },
   methods: {
     ...mapActions([
@@ -65,23 +50,19 @@ export default {
       const dados = {
         name: this.nome,
         password: this.senha,
-        email: this.email,
-        profileImg: this.avatar
-      };
+        email: this.email
+      }
 
       this.criarUsuario(dados)
         .then(() => {
-          this.exibirModalSucesso = true;
+          this.exibirModalSucesso = true
         })
         .catch(erros => {
-          this.erros = erros;
-        });
-    },
-    pegarArquivo(arquivo) {
-      this.nomeAvatar = arquivo.name;
-    },
-  },
-};
+          this.erros = erros
+        })
+    }
+  }
+}
 </script>
 
 <style>
