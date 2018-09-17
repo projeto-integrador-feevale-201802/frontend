@@ -35,5 +35,9 @@ export default new Router({
       name: 'cadastrar usuario',
       component: CadastrarUsuario,
     },
+    {
+      path: "*",
+      redirect: '/'
+    }
   ],
 });
