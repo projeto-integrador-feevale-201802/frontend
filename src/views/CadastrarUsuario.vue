@@ -63,10 +63,10 @@ export default {
     ]),
     cadastrarUsuario() {
       const dados = {
-        nome: this.nome,
-        senha: this.senha,
+        name: this.nome,
+        password: this.senha,
         email: this.email,
-        avatar: this.avatar
+        profileImg: this.avatar
       };
 
       this.criarUsuario(dados)
