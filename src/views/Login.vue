@@ -37,10 +37,15 @@ export default {
   },
   methods: {
     ...mapActions(['autenticar']),
-    fazerLogin() {
-      this.autenticar({ 'email' : this.email, 'password' : this.senha })
-        .then(() => this.$router.push('/'))
-        .catch(erros => this.erros = erros);
+    async fazerLogin() {
+      const dados = { email: this.email, password: this.senha }
+
+      try {
+        await this.autenticar(dados)
+        this.$router.push('/')
+      } catch (err) {
+        this.erros = err
+      }
     },
   },
 };

@@ -3,11 +3,12 @@ import Router from 'vue-router';
 import Home from './views/Home.vue';
 import Login from './views/Login.vue';
 import CadastrarUsuario from './views/CadastrarUsuario.vue';
+import { NOME_STORAGE_AUTH } from './config.json'
 
 Vue.use(Router);
 
 function somenteAutenticado(to, from, next) {
-  if (window.localStorage.getItem('auth-bolao')) {
+  if (window.localStorage.getItem(NOME_STORAGE_AUTH)) {
     next();
   } else {
     next('/login');

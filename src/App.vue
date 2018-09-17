@@ -6,11 +6,6 @@
 
 <script>
 export default {
-  methods: {
-    estaLogado () {
-      return false
-    }
-  }
 }
 </script>
 

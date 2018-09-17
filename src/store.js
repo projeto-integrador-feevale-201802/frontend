@@ -1,10 +1,11 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import { NOME_STORAGE_AUTH } from './config.json'
 
 Vue.use(Vuex);
 
 function substituirErroGenerico(erros) {
-  if (erros && erros.length) {
+  if (typeof erros === 'object' && erros.length) {
     return erros;
   }
 
@@ -29,10 +30,10 @@ export default new Vuex.Store({
       const res = await fetch('http://localhost:8181/user/login', { method: 'POST', body: data, headers : header, mode : 'cors' });
 
       if (!res.token) {
-        throw substituirErroGenerico(res.erros);
+        throw substituirErroGenerico(res.erros)
       }
 
-      window.localStorage.setItem('auth-bolao', res.token);
+      window.localStorage.setItem(NOME_STORAGE_AUTH, res.token)
     },
     async criarUsuario(_, dados) {
       const data = JSON.stringify(dados)
@@ -43,5 +44,8 @@ export default new Vuex.Store({
         throw substituirErroGenerico(res.erros);
       }
     },
+    deslogar() {
+      window.localStorage.removeItem(NOME_STORAGE_AUTH);
+    }
   },
 });
