@@ -1,23 +1,29 @@
 <template>
-  <div class="home">
-      <menu-principal />
-
-      <div id="nav">
-        <router-link to="/">Home</router-link> |
-        <router-link to="/about">About</router-link>
-      </div>
-
-    <img alt="Vue logo" src="../assets/logo.png">
-  </div>
+  <p v-if="classificacao.length === 0">{{mensagem}}</p>
+  <b-table v-else hover :items="classificacao"></b-table>
 </template>
 
 <script>
-import MenuPrincipal from '@/views/MenuPrincipal.vue';
+import { mapActions } from 'vuex'
 
 export default {
-  name: 'home',
-  components: {
-    MenuPrincipal,
+  data() {
+    return {
+      mensagem: 'Carregando tabela do brasileirão...',
+      classificacao: []
+    }
   },
+  methods: {
+    ...mapActions([
+      'buscarClassificacaoTimes'
+    ])
+  },
+  async beforeMount() {
+    try {
+      this.classificacao = await this.buscarClassificacaoTimes()
+    } catch (err) {
+      this.mensagem = err + ''
+    }
+  }
 };
 </script>

@@ -17,7 +17,7 @@ function substituirErroGenerico(erros) {
 }
 
 function request(endpoint, dados, metodo='POST') {
-  const body = JSON.stringify(dados)
+  const body = JSON.stringify(dados || {})
 
   const headers = {
     'Content-Type': 'application/json',
@@ -30,6 +30,10 @@ function request(endpoint, dados, metodo='POST') {
     body,
     method: metodo,
     mode: 'cors'
+  }
+
+  if (metodo === 'GET') {
+    delete options.body
   }
 
   return fetch('http://localhost:8181' + endpoint, options).then(res => res.json())
@@ -62,6 +66,15 @@ export default new Vuex.Store({
     async deslogar() {
       await request('/user/logout', { token: window.localStorage.getItem(NOME_STORAGE_AUTH) })
       window.localStorage.removeItem(NOME_STORAGE_AUTH);
-    }
+    },
+    async buscarClassificacaoTimes() {
+      const res = await request('/classification/teams', {}, 'GET')
+
+      if (res.errors) {
+        throw substituirErroGenerico(res.errors);
+      }
+
+      return res
+    },
   },
 });
