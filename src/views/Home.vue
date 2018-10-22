@@ -1,6 +1,6 @@
 <template>
   <p v-if="classificacao.length === 0">{{mensagem}}</p>
-  <b-table v-else hover :items="classificacao"></b-table>
+  <b-table v-else hover :items="classificacao" :fields="['nome', 'P', 'J', 'V', 'E', 'D', 'GP', 'GC', 'S']"></b-table>
 </template>
 
 <script>
