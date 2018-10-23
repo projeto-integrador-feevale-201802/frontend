@@ -76,5 +76,21 @@ export default new Vuex.Store({
 
       return res
     },
-  },
+    async carregarDados() {
+      const res = await request('/user/1', {}, 'GET')
+
+      if (res.errors) {
+        throw substituirErroGenerico(res.errors);
+      }
+
+      return res
+    },
+    async atualizarUsuario(_, dados) {
+      const res = await request('/user/save', dados)
+
+      if (res.errors) {
+        throw substituirErroGenerico(res.errors);
+      }
+    },
+  }
 });

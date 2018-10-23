@@ -2,14 +2,14 @@
   <div class="form-group">
     <label>
       {{texto}}
-      <input :type="tipo" class="form-control" v-model="valor">
+      <input :type="tipo" class="form-control" v-model="valor" :readonly="apenasleitura">
     </label>
   </div>
 </template>
 
 <script>
 export default {
-  props: ['texto', 'tipo', 'value'],
+  props: ['texto', 'tipo', 'value', 'apenasleitura'],
   data () {
     return {
       valor: this.value
