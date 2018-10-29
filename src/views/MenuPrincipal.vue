@@ -1,30 +1,30 @@
 <template>
-  <ul id="menu-principal">
-    <li>
-      <router-link to="/">Home</router-link>
-    </li>
-    <li>
-      <router-link to="/perfil">Meu perfil</router-link>
-    </li>
-    <li>
-      <router-link to="/ver-apostas">Ver apostas</router-link>
-    </li>
-    <li>
-      <router-link to="/apostar">Apostar</router-link>
-    </li>
-    <li>
-      <router-link to="/ranking">Ranking</router-link>
-    </li>
-    <li>
+  <b-list-group id="menu-principal">
+    <b-list-group-item v-for="(rota, i) in rotas" :key="i">
+      <strong v-if="ehRotaAtual(rota)">{{rota.nome}}</strong>
+      <router-link v-else :to="rota.endpoint" :key="$route.fullPath">{{rota.nome}}</router-link>
+    </b-list-group-item>
+    <b-list-group-item>
       <a href="" @click="sair">Sair</a>
-    </li>
-  </ul>
+    </b-list-group-item>
+  </b-list-group>
 </template>
 
 <script>
 import { mapActions } from 'vuex'
 
 export default {
+  data() {
+    return {
+      rotas: [
+        { endpoint: '/', nome: 'Home' },
+        { endpoint: '/perfil', nome: 'Meu perfil' },
+        { endpoint: '/ver-apostas', nome: 'Ver apostas' },
+        { endpoint: '/apostar', nome: 'Apostar' },
+        { endpoint: '/ranking', nome: 'Ranking' },
+      ]
+    }
+  },
   methods: {
     ...mapActions([
       'deslogar'
@@ -32,6 +32,9 @@ export default {
     sair() {
       this.deslogar()
       this.$router.push('/login')
+    },
+    ehRotaAtual(rota) {
+      return this.$router.currentRoute.path === rota.endpoint
     }
   }
 }
@@ -41,7 +44,7 @@ export default {
   #menu-principal {
     overflow: hidden;
     position: fixed;
-    left: 0;
+    margin-left: 10px;
     width: 150px;
     text-decoration: none;
   }
