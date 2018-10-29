@@ -1,5 +1,89 @@
 <template>
   <div>
-    Tela <strong>Apostar</strong>
+    <b-form class="filtros">
+      <b-form-select
+        :options="rodadas"
+        v-model="rodadaSelecionada"
+      />
+    </b-form>
+
+    <template v-if="jogos !== null">
+      <b-list-group class="listagem">
+        <b-list-group-item v-for="(a, i) in apostas" :key="i">
+          {{jogos[i].home}} <input type="text" class="input-gols" v-model="a.home"> x <input type="text" class="input-gols" v-model="a.visitor"> {{jogos[i].visitor}}
+        </b-list-group-item>
+      </b-list-group>
+
+      <b-button variant="primary" @click="gravar" class="btn-gravar">Gravar</b-button>
+    </template>
+    <p v-else>{{mensagem}}</p>
   </div>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      rodadas: [],
+      rodadaSelecionada: null,
+      jogos: null,
+      apostas: null,
+      mensagem: 'Carregando listagem...'
+    }
+  },
+  methods: {
+    gravar() {
+      console.log(this.apostas)
+    }
+  },
+  watch: {
+    rodadaSelecionada: function() {
+      this.jogos = null
+
+      setTimeout(() => {
+        this.apostas = [
+          { home: '', visitor: '' },
+          { home: '', visitor: '' },
+          { home: '', visitor: '' },
+        ]
+        this.jogos = [
+          { home: 'Internacional', visitor: 'Palmeiras' },
+          { home: 'Gremio', visitor: 'Santos' },
+          { home: 'Atlético Mineiro', visitor: 'Atlético Paranaense' },
+        ]
+      }, 1500);
+    }
+  },
+  async beforeMount() {
+    for (let i = 1; i <= 38; i++) {
+      this.rodadas.push(i)
+    }
+
+    this.rodadaSelecionada = 1
+  }
+}
+</script>
+
+<style>
+.filtros {
+  width: 250px;
+  margin: 10px auto;
+}
+
+.listagem {
+  text-align: center;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.input-gols {
+  display: inline;
+  max-width: 30px;
+  text-align: center;
+}
+
+.btn-gravar {
+  display: block;
+  margin: 10px auto;
+}
+</style>
