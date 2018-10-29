@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-form class="filtros">
+    <b-form v-if="usuarios !== null" class="filtros">
       <b-form-select
         class="filtro"
         :options="rodadas"
@@ -13,59 +13,80 @@
         class="input-sm filtro"
       />
     </b-form>
+    <p v-else>{{mensagem}}</p>
 
-    <b-list-group class="listagem">
-      <b-list-group-item v-for="(r, i) in resultados" :key="i" :variant="acertos.has(i - 1) ? 'success' : ''">
-        {{r.home}} {{r.actualScoreHome}} ({{r.betScoreHome}}) x ({{r.betScoreVisistor}}) {{r.actualScoreVisitor}} {{r.visitor}}
-      </b-list-group-item>
-    </b-list-group>
+    <template v-if="usuarios !== null">
+      <b-list-group v-if="apostas !== null" class="listagem">
+        <b-list-group-item v-for="(r, i) in apostas" :key="i" :variant="acertos.has(i - 1) ? 'success' : ''">
+          {{r.home}} {{r.actualScoreHome}} ({{r.betScoreHome}}) x ({{r.betScoreVisistor}}) {{r.actualScoreVisitor}} {{r.visitor}}
+        </b-list-group-item>
+      </b-list-group>
+      <p v-else>Carregando apostas...</p>
+    </template>
   </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   data() {
     return {
-      rodadas: [1,2,3,4,5,6],
-      rodadaSelecionada: 1,
-      usuarios: [{ nome: 'Gabriel', id: 1 }, { nome: 'Ândres', id: 2 }, { nome: 'João', id: 3 }],
-      usuarioSelecionado: 1,
-      resultados: [
-        {
-          home: 'Internacional',
-          visitor: 'Palmeiras',
-          actualScoreHome: 1,
-          betScoreHome: 2,
-          actualScoreVisitor: 1,
-          betScoreVisistor: 0
-        },
-        {
-          home: 'Gremio',
-          visitor: 'Sport',
-          actualScoreHome: 3,
-          betScoreHome: 3,
-          actualScoreVisitor: 4,
-          betScoreVisistor: 4
-        },
-        {
-          home: 'Flamengo',
-          visitor: 'Santos',
-          actualScoreHome: 3,
-          betScoreHome: 3,
-          actualScoreVisitor: 1,
-          betScoreVisistor: 0
-        }
-      ]
+      rodadas: [],
+      rodadaSelecionada: null,
+      usuarioSelecionado: null,
+      usuarios: null,
+      apostas: null,
+      mensagem: 'Carregando usuários...'
     }
   },
   computed: {
     acertos() {
-      const indices = this.resultados
+      const indices = this.apostas
         .filter(r => r.betScoreHome === r.actualScoreHome && r.betScoreVisistor === r.actualScoreVisitor)
         .map((r, i) => i)
 
       return new Set(indices)
     }
+  },
+  methods: {
+    ...mapActions([
+      'buscarUsuarios',
+      'buscarApostas'
+    ])
+  },
+  watch: {
+    async usuarioSelecionado() {
+      this.apostas = null
+
+      try {
+        this.apostas = await this.buscarApostas({
+          usuario: this.usuarioSelecionado,
+          rodada: this.rodadaSelecionada
+        })
+      } catch (err) {
+        this.mensagem = err + ''
+        this.usuarios = null
+      }
+    }
+  },
+  async beforeMount() {
+    for (let i = 1; i <= 38; i++) {
+      this.rodadas.push(i)
+    }
+
+    this.rodadaSelecionada = 1
+
+    try {
+      this.usuarios = await this.buscarUsuarios()
+    } catch (err) {
+      this.mensagem = err + ''
+      return
+    }
+
+    setTimeout(() => {
+      this.usuarioSelecionado = this.usuarios[0].id
+    }, 1000);
   }
 }
 </script>
