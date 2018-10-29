@@ -8,7 +8,7 @@
       />
 
       <b-form-select
-        :options="usuarios.map(x => ({text: x.nome, value: x.id}))"
+        :options="usuarios.map(x => ({text: x.name, value: x.id}))"
         v-model="usuarioSelecionado"
         class="input-sm filtro"
       />
@@ -18,7 +18,8 @@
     <template v-if="usuarios !== null">
       <b-list-group v-if="apostas !== null" class="listagem">
         <b-list-group-item v-for="(r, i) in apostas" :key="i" :variant="acertos.has(i - 1) ? 'success' : ''">
-          {{r.home}} {{r.actualScoreHome}} ({{r.betScoreHome}}) x ({{r.betScoreVisistor}}) {{r.actualScoreVisitor}} {{r.visitor}}
+          <!-- {{r.home}} {{r.actualScoreHome}} ({{r.betScoreHome}}) x ({{r.betScoreVisistor}}) {{r.actualScoreVisitor}} {{r.visitor}} -->
+          {{r.home}} {{r.scoreHome}} ({{r.betScoreHome}}) x ({{r.betScoreVisistor}}) {{r.scoreVisitor}} {{r.visitor}}
         </b-list-group-item>
       </b-list-group>
       <p v-else>Carregando apostas...</p>

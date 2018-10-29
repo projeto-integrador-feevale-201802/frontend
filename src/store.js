@@ -111,13 +111,20 @@ export default new Vuex.Store({
       return res
     },
     async buscarApostas(_, {usuario, rodada}) {
-      const res = await request('/bet/' + usuario + '?round=' + rodada, {}, 'GET')
+      const res = await request('/bet/' + usuario + '/' + rodada, {}, 'GET')
 
       if (res.errors) {
         throw substituirErroGenerico(res.errors);
       }
 
       return res
+    },
+    async salvarAposta(_, dados) {
+      const res = await request('/bet/save', dados)
+
+      if (res.errors) {
+        throw substituirErroGenerico(res.errors);
+      }
     },
   }
 });

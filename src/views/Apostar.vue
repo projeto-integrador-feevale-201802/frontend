@@ -10,7 +10,7 @@
     <template v-if="jogos !== null">
       <b-list-group class="listagem">
         <b-list-group-item v-for="(a, i) in apostas" :key="i">
-          {{jogos[i].home}} <input type="text" class="input-gols" v-model="a.home"> x <input type="text" class="input-gols" v-model="a.visitor"> {{jogos[i].visitor}}
+          {{jogos[i].home}} <input type="number" class="input-gols" v-model="a.scoreHome"> x <input type="number" class="input-gols" v-model="a.scoreVisitor"> {{jogos[i].visitor}}
         </b-list-group-item>
       </b-list-group>
 
@@ -21,6 +21,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   data() {
     return {
@@ -32,8 +34,18 @@ export default {
     }
   },
   methods: {
+    ...mapActions([
+      'salvarAposta'
+    ]),
     gravar() {
       console.log(this.apostas)
+      this.salvarAposta(this.apostas)
+        .then(() => {
+          this.exibirModalSucesso = true
+        })
+        .catch(erros => {
+          this.erros = erros
+        })
     }
   },
   watch: {
@@ -42,9 +54,9 @@ export default {
 
       setTimeout(() => {
         this.apostas = [
-          { home: '', visitor: '' },
-          { home: '', visitor: '' },
-          { home: '', visitor: '' },
+          { idMatch: this.rodadaSelecionada, idUser: 1 },
+          { idMatch: this.rodadaSelecionada, idUser: 1 },
+          { idMatch: this.rodadaSelecionada, idUser: 1 },
         ]
         this.jogos = [
           { home: 'Internacional', visitor: 'Palmeiras' },
