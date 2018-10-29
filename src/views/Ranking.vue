@@ -21,19 +21,20 @@ export default {
   },
   computed: {
     listaComIndice() {
+      const lista = this.lista.map(x => x)
       let posicao = 1
 
-      this.lista[0].posicao = posicao
+      lista[0].posicao = posicao
 
-      for (let i = 1; i < this.lista.length; i++) {
-        if (this.lista[i].pontuacao !== this.lista[i - 1].pontuacao) {
+      for (let i = 1; i < lista.length; i++) {
+        if (lista[i].pontuacao !== lista[i - 1].pontuacao) {
           posicao = i + 1
         }
 
-        this.lista[i].posicao = posicao
+        lista[i].posicao = posicao
       }
 
-      return this.lista
+      return lista
     }
   },
   methods: {
