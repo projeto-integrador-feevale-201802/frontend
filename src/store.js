@@ -92,5 +92,14 @@ export default new Vuex.Store({
         throw substituirErroGenerico(res.errors);
       }
     },
+    async buscarClassificacaoUsuarios() {
+      const res = await request('/classification/users', {}, 'GET')
+
+      if (res.errors) {
+        throw substituirErroGenerico(res.errors);
+      }
+
+      return res
+    },
   }
 });
