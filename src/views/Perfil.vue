@@ -45,7 +45,7 @@ export default {
   methods: {
     ...mapActions([
       'atualizarUsuario',
-      'carregarDados'
+      'carregarDadosUsuario'
     ]),
     atualizarPerfil() {
       const data = {
@@ -64,7 +64,7 @@ export default {
   },
   async beforeMount() {
     try {
-      this.dados = await this.carregarDados()
+      this.dados = await this.carregarDadosUsuario({id: 1})
     } catch (err) {
       this.mensagem = err + ''
     }

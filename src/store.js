@@ -76,8 +76,8 @@ export default new Vuex.Store({
 
       return res
     },
-    async carregarDados() {
-      const res = await request('/user/1', {}, 'GET')
+    async carregarDadosUsuario(_, {id}) {
+      const res = await request('/user/' + id, {}, 'GET')
 
       if (res.errors) {
         throw substituirErroGenerico(res.errors);
@@ -94,6 +94,24 @@ export default new Vuex.Store({
     },
     async buscarClassificacaoUsuarios() {
       const res = await request('/classification/users', {}, 'GET')
+
+      if (res.errors) {
+        throw substituirErroGenerico(res.errors);
+      }
+
+      return res
+    },
+    async buscarUsuarios() {
+      const res = await request('/user', {}, 'GET')
+
+      if (res.errors) {
+        throw substituirErroGenerico(res.errors);
+      }
+
+      return res
+    },
+    async buscarApostas(_, {usuario, rodada}) {
+      const res = await request('/bet/' + usuario + '?round=' + rodada, {}, 'GET')
 
       if (res.errors) {
         throw substituirErroGenerico(res.errors);
