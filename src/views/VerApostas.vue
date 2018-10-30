@@ -61,10 +61,27 @@ export default {
       this.apostas = null
 
       try {
-        this.apostas = await this.buscarApostas({
-          usuario: this.usuarioSelecionado,
-          rodada: this.rodadaSelecionada
-        })
+        if (!!this.usuarioSelecionado && !!this.rodadaSelecionada) {
+          this.apostas = await this.buscarApostas({
+            usuario: this.usuarioSelecionado,
+            rodada: this.rodadaSelecionada
+          })
+        }
+      } catch (err) {
+        this.mensagem = err + ''
+        this.usuarios = null
+      }
+    },
+    async rodadaSelecionada() {
+      this.apostas = null
+
+      try {
+        if (!!this.usuarioSelecionado && !!this.rodadaSelecionada) {
+          this.apostas = await this.buscarApostas({
+            usuario: this.usuarioSelecionado,
+            rodada: this.rodadaSelecionada
+          })
+        }
       } catch (err) {
         this.mensagem = err + ''
         this.usuarios = null
