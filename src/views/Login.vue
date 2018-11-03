@@ -41,8 +41,12 @@ export default {
       const dados = { email: this.email, password: this.senha }
 
       try {
-        await this.autenticar(dados)
-        this.$router.push('/')
+        if (!!dados.email && !!dados.password) {
+          await this.autenticar(dados)
+          this.$router.push('/')
+        } else {
+          this.erros = ['Campos não preenchidos']
+        }
       } catch (err) {
         this.erros = err
       }

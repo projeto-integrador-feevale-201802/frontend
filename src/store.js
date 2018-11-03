@@ -64,7 +64,7 @@ export default new Vuex.Store({
       }
     },
     async deslogar() {
-      await request('/user/logout', { token: window.localStorage.getItem(NOME_STORAGE_AUTH) })
+      request('/user/logout', { token: window.localStorage.getItem(NOME_STORAGE_AUTH) })
       window.localStorage.removeItem(NOME_STORAGE_AUTH);
     },
     async buscarClassificacaoTimes() {

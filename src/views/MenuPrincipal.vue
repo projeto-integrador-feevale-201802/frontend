@@ -31,7 +31,6 @@ export default {
     ]),
     sair() {
       this.deslogar()
-      this.$router.push('/login')
     },
     ehRotaAtual(rota) {
       return this.$router.currentRoute.path === rota.endpoint

@@ -15,7 +15,7 @@ function somenteAutenticado(to, from, next) {
   if (window.localStorage.getItem(NOME_STORAGE_AUTH)) {
     next();
   } else {
-    next( /*'/login'*/ );
+    next('/login');
   }
 }
 
