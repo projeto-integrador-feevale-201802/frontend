@@ -64,7 +64,7 @@ export default {
   },
   async beforeMount() {
     try {
-      this.dados = await this.carregarDadosUsuario({id: 1})
+      this.dados = await this.carregarDadosUsuario()
     } catch (err) {
       this.mensagem = err + ''
     }

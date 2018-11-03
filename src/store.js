@@ -16,6 +16,10 @@ function substituirErroGenerico(erros) {
   return ['Houve um erro desconhecido']
 }
 
+function getToken() {
+  return window.localStorage.getItem(NOME_STORAGE_AUTH)
+}
+
 function request(endpoint, dados, metodo='POST') {
   const body = JSON.stringify(dados || {})
 
@@ -76,8 +80,8 @@ export default new Vuex.Store({
 
       return res
     },
-    async carregarDadosUsuario(_, {id}) {
-      const res = await request('/user/' + id, {}, 'GET')
+    async carregarDadosUsuario() {
+      const res = await request('/user/' + getToken(), {}, 'GET')
 
       if (res.errors) {
         throw substituirErroGenerico(res.errors);
