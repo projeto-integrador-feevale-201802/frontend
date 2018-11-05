@@ -139,5 +139,14 @@ export default new Vuex.Store({
 
       return res
     },
+    async buscarNovasRodadas() {
+      const res = await request('/game/rounds', {}, 'GET')
+
+      if (res.errors) {
+        throw substituirErroGenerico(res.errors);
+      }
+
+      return res
+    },
   }
 });

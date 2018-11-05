@@ -36,7 +36,8 @@ export default {
   methods: {
     ...mapActions([
       'salvarAposta',
-      'buscarJogos'
+      'buscarJogos',
+      'buscarNovasRodadas'
     ]),
     gravar() {
       this.salvarAposta(this.apostas)
@@ -69,11 +70,12 @@ export default {
     }
   },
   async beforeMount() {
-    for (let i = 1; i <= 38; i++) {
-      this.rodadas.push(i)
-    }
+    // for (let i = 1; i <= 38; i++) {
+    //   this.rodadas.push(i)
+    // }
+    this.rodadas = await this.buscarNovasRodadas()
 
-    this.rodadaSelecionada = 1
+    // this.rodadaSelecionada = 1
   }
 }
 </script>
