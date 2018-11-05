@@ -5,7 +5,7 @@
     class="tabela"
     hover
     :items="listaComIndice"
-    :fields="{posicao: 'Posição', nome: 'Nome', pontuacao: 'Pontuação'}"
+    :fields="{posicao: 'Posição', name: 'Nome', points: 'Pontuação'}"
   ></b-table>
 </template>
 
@@ -27,7 +27,7 @@ export default {
       lista[0].posicao = posicao
 
       for (let i = 1; i < lista.length; i++) {
-        if (lista[i].pontuacao !== lista[i - 1].pontuacao) {
+        if (lista[i].points !== lista[i - 1].points) {
           posicao = i + 1
         }
 
