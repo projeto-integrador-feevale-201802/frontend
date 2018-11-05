@@ -10,7 +10,7 @@
     <template v-if="jogos !== null">
       <b-list-group class="listagem">
         <b-list-group-item v-for="(a, i) in apostas" :key="i">
-          {{jogos[i].home}} <input type="number" class="input-gols" v-model="a.scoreHome"> x <input type="number" class="input-gols" v-model="a.scoreVisitor"> {{jogos[i].visitor}}
+          {{jogos[i].nameHome}} <input type="number" class="input-gols" v-model="a.scoreHome"> x <input type="number" class="input-gols" v-model="a.scoreVisitor"> {{jogos[i].nameVisitor}}
         </b-list-group-item>
       </b-list-group>
 
@@ -28,17 +28,17 @@ export default {
     return {
       rodadas: [],
       rodadaSelecionada: null,
-      jogos: null,
+      jogos: [],
       apostas: null,
       mensagem: 'Carregando listagem...'
     }
   },
   methods: {
     ...mapActions([
-      'salvarAposta'
+      'salvarAposta',
+      'buscarJogos'
     ]),
     gravar() {
-      console.log(this.apostas)
       this.salvarAposta(this.apostas)
         .then(() => {
           this.exibirModalSucesso = true
@@ -49,19 +49,21 @@ export default {
     }
   },
   watch: {
-    rodadaSelecionada: function() {
+    async rodadaSelecionada() {
       this.jogos = null
+
+      try {
+        this.jogos = await this.buscarJogos(this.rodadaSelecionada)
+      } catch (err) {
+        this.mensagem = err + ''
+        return
+      }
 
       setTimeout(() => {
         this.apostas = [
           { idMatch: this.rodadaSelecionada, idUser: 1 },
           { idMatch: this.rodadaSelecionada, idUser: 1 },
           { idMatch: this.rodadaSelecionada, idUser: 1 },
-        ]
-        this.jogos = [
-          { home: 'Internacional', visitor: 'Palmeiras' },
-          { home: 'Gremio', visitor: 'Santos' },
-          { home: 'Atlético Mineiro', visitor: 'Atlético Paranaense' },
         ]
       }, 1500);
     }

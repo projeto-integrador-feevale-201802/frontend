@@ -130,5 +130,14 @@ export default new Vuex.Store({
         throw substituirErroGenerico(res.errors);
       }
     },
+    async buscarJogos(_, round) {
+      const res = await request('/game/' + round, {}, 'GET')
+
+      if (res.errors) {
+        throw substituirErroGenerico(res.errors);
+      }
+
+      return res
+    },
   }
 });
