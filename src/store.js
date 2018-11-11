@@ -123,12 +123,41 @@ export default new Vuex.Store({
 
       return res
     },
-    async salvarAposta(_, dados) {
+    async salvarApostas(_, dados) {
+      const { id, errors } = await request('/user/' + getToken(), {}, 'GET')
+
+      if (errors) {
+        throw substituirErroGenerico(errors);
+      }
+
+      for (const aposta of dados) {
+        aposta.idUser = id
+      }
+
       const res = await request('/bet/save', dados)
 
       if (res.errors) {
         throw substituirErroGenerico(res.errors);
       }
+    },
+    async buscarViewApostas(_, {rodadaSelecionada, usuarioSelecionado}) {
+      if (usuarioSelecionado === undefined) {
+        const { id, errors } = await request('/user/' + getToken(), {}, 'GET')
+
+        if (errors) {
+          throw substituirErroGenerico(errors);
+        }
+
+        usuarioSelecionado = id
+      }
+
+      const res = await request('/bet/' + usuarioSelecionado + '/' + rodadaSelecionada, {}, 'GET')
+
+      if (res.errors) {
+        throw substituirErroGenerico(res.errors)
+      }
+
+      return res
     },
     async buscarJogos(_, round) {
       const res = await request('/game/' + round, {}, 'GET')
