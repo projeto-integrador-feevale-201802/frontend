@@ -130,8 +130,8 @@ export default new Vuex.Store({
         throw substituirErroGenerico(res.errors);
       }
     },
-    async buscarJogos(_, round) {
-      const res = await request('/game/' + round, {}, 'GET')
+    async buscarJogos(_, {usuario, rodada}) {
+      const res = await request('/game/' + usuario + '/'+ rodada, {}, 'GET')
 
       if (res.errors) {
         throw substituirErroGenerico(res.errors);
@@ -141,6 +141,15 @@ export default new Vuex.Store({
     },
     async buscarNovasRodadas() {
       const res = await request('/game/rounds', {}, 'GET')
+
+      if (res.errors) {
+        throw substituirErroGenerico(res.errors);
+      }
+
+      return res
+    },
+    async buscarRodadasEncerradas() {
+      const res = await request('/game/finishedRounds', {}, 'GET')
 
       if (res.errors) {
         throw substituirErroGenerico(res.errors);

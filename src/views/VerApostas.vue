@@ -53,7 +53,8 @@ export default {
   methods: {
     ...mapActions([
       'buscarUsuarios',
-      'buscarApostas'
+      'buscarApostas',
+      'buscarRodadasEncerradas'
     ])
   },
   watch: {
@@ -89,13 +90,13 @@ export default {
     }
   },
   async beforeMount() {
-    for (let i = 1; i <= 38; i++) {
-      this.rodadas.push(i)
-    }
-
-    this.rodadaSelecionada = 1
-
     try {
+      for (let i = 1; i <= 38; i++) {
+        this.rodadas.push(i)
+      }
+
+      this.rodadaSelecionada = 1
+      // this.rodadas = await this.buscarRodadasEncerradas()
       this.usuarios = await this.buscarUsuarios()
     } catch (err) {
       this.mensagem = err + ''

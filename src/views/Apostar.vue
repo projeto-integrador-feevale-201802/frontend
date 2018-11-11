@@ -29,12 +29,14 @@ export default {
       rodadas: [],
       rodadaSelecionada: null,
       jogos: [],
-      apostas: null,
+      apostas: [],
+      usuario: null,
       mensagem: 'Carregando listagem...'
     }
   },
   methods: {
     ...mapActions([
+      'carregarDadosUsuario',
       'salvarAposta',
       'buscarJogos',
       'buscarNovasRodadas'
@@ -51,31 +53,35 @@ export default {
   },
   watch: {
     async rodadaSelecionada() {
-      this.jogos = null
-
       try {
-        this.jogos = await this.buscarJogos(this.rodadaSelecionada)
+        this.jogos = []
+        this.jogos = await this.buscarJogos({
+            usuario: this.usuario.id,
+            rodada: this.rodadaSelecionada
+          })
       } catch (err) {
         this.mensagem = err + ''
         return
       }
 
       setTimeout(() => {
-        this.apostas = [
-          { idMatch: this.rodadaSelecionada, idUser: 1 },
-          { idMatch: this.rodadaSelecionada, idUser: 1 },
-          { idMatch: this.rodadaSelecionada, idUser: 1 },
-        ]
+        for (let i = 1; i < this.jogos.length; i++) {
+          var aposta = {
+            idMatch: this.jogos[i].id,
+            idUser: this.usuario.id
+          }
+          this.apostas.push(aposta)
+        }
       }, 1500);
     }
   },
   async beforeMount() {
-    // for (let i = 1; i <= 38; i++) {
-    //   this.rodadas.push(i)
-    // }
-    this.rodadas = await this.buscarNovasRodadas()
-
-    // this.rodadaSelecionada = 1
+    try {
+      this.usuario = await this.carregarDadosUsuario()
+      this.rodadas = await this.buscarNovasRodadas()
+    } catch (err) {
+      this.mensagem = err + ''
+    }
   }
 }
 </script>
