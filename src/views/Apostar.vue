@@ -64,22 +64,20 @@ export default {
 
       for (const idMatch of Object.keys(this.apostas)) {
         const x = this.apostas[idMatch]
-        x.scoreHome = parseInt(x.scoreHome) || null
-        x.scoreVisitor = parseInt(x.scoreVisitor) || null
+        x.scoreHome = parseInt(x.scoreHome)
+        x.scoreVisitor = parseInt(x.scoreVisitor)
         apostas.push(x)
       }
 
       this.salvarApostas(apostas)
         .then(() => {
-          this.exibirModalSucesso = true
+          this.atualizar()
         })
         .catch(erros => {
           this.erros = erros
         })
-    }
-  },
-  watch: {
-    async rodadaSelecionada() {
+    },
+    async atualizar() {
       this.viewApostas = null
       this.mensabem = 'Carregando dados da rodada ' + this.rodadaSelecionada + '...'
 
@@ -90,6 +88,11 @@ export default {
       } catch (err) {
         this.mensagem = err + ''
       }
+    }
+  },
+  watch: {
+    async rodadaSelecionada() {
+      await this.atualizar()
     },
     viewApostas() {
       if (this.viewApostas === null) {
