@@ -60,13 +60,6 @@ export default {
   methods: {
     ...mapActions([
       'buscarUsuarios',
-      // 'buscarApostas',
-      // 'buscarRodadasEncerradas'
-    // ])
-  // },
-  // watch: {
-  //   async usuarioSelecionado() {
-  //     this.apostas = null
       'buscarViewApostas'
     ]),
     async atualizar() {

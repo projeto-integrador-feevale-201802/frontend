@@ -159,8 +159,6 @@ export default new Vuex.Store({
 
       return res
     },
-    // async buscarJogos(_, {usuario, rodada}) {
-      // const res = await request('/game/' + usuario + '/'+ rodada, {}, 'GET')
     async buscarJogos(_, round) {
       const res = await request('/game/' + round, {}, 'GET')
 

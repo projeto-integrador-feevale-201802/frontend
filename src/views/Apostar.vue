@@ -39,12 +39,6 @@ export default {
     return {
       rodadas: Array.from({ length: 38 }, (_, i) => i + 1),
       rodadaSelecionada: null,
-// <<<<<<< HEAD
-//       jogos: [],
-//       apostas: [],
-//       usuario: null,
-//       mensagem: 'Carregando listagem...'
-// =======
       viewApostas: null,
       apostas: {},
       mensagem: 'Carregando...'
@@ -52,15 +46,8 @@ export default {
   },
   methods: {
     ...mapActions([
-// <<<<<<< HEAD
-//       'carregarDadosUsuario',
-//       'salvarAposta',
-//       'buscarJogos',
-//       'buscarNovasRodadas'
-// =======
       'salvarApostas',
       'buscarViewApostas'
-// >>>>>>> 3d111379284d9e2888317686f29ce34e90978bbf
     ]),
     acertouPlacar({actualScoreHome, actualScoreVisitor, betScoreHome, betScoreVisitor}) {
       return (
@@ -93,14 +80,6 @@ export default {
   },
   watch: {
     async rodadaSelecionada() {
-// <<<<<<< HEAD
-//       try {
-//         this.jogos = []
-//         this.jogos = await this.buscarJogos({
-//             usuario: this.usuario.id,
-//             rodada: this.rodadaSelecionada
-//           })
-// =======
       this.viewApostas = null
       this.mensabem = 'Carregando dados da rodada ' + this.rodadaSelecionada + '...'
 
@@ -108,7 +87,6 @@ export default {
         this.viewApostas = await this.buscarViewApostas({
           rodadaSelecionada: this.rodadaSelecionada
         })
-// >>>>>>> 3d111379284d9e2888317686f29ce34e90978bbf
       } catch (err) {
         this.mensagem = err + ''
       }
@@ -118,36 +96,15 @@ export default {
         return
       }
 
-// <<<<<<< HEAD
-//       setTimeout(() => {
-//         for (let i = 1; i < this.jogos.length; i++) {
-//           var aposta = {
-//             idMatch: this.jogos[i].id,
-//             idUser: this.usuario.id
-//           }
-//           this.apostas.push(aposta)
-//         }
-//       }, 1500);
-//     }
-//   },
-//   async beforeMount() {
-//     try {
-//       this.usuario = await this.carregarDadosUsuario()
-//       this.rodadas = await this.buscarNovasRodadas()
-//     } catch (err) {
-//       this.mensagem = err + ''
-//     }
-// =======
       this.apostas = {}
 
-      for (const { idMatch } of this.viewApostas) {
-        this.apostas[idMatch] = { idMatch }
+      for (const v of this.viewApostas) {
+        this.apostas[v.idMatch] = { idMatch: v.idMatch, scoreHome: v.betScoreHome, scoreVisitor: v.betScoreVisitor }
       }
     }
   },
   mounted() {
     this.rodadaSelecionada = 1
-// >>>>>>> 3d111379284d9e2888317686f29ce34e90978bbf
   }
 }
 </script>
