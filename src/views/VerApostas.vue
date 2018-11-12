@@ -15,14 +15,15 @@
     </b-form>
     <p v-else>{{mensagem}}</p>
 
-    <template v-if="usuarios !== null">
-      <b-list-group v-if="apostas !== null" class="listagem">
-        <b-list-group-item v-for="(r, i) in apostas" :key="i" :variant="acertos.has(i - 1) ? 'success' : ''">
-          <!-- {{r.home}} {{r.actualScoreHome}} ({{r.betScoreHome}}) x ({{r.betScoreVisistor}}) {{r.actualScoreVisitor}} {{r.visitor}} -->
-          {{r.home}} {{r.scoreHome}} ({{r.betScoreHome}}) x ({{r.betScoreVisistor}}) {{r.scoreVisitor}} {{r.visitor}}
+    <template v-if="usuarios !== null && viewApostas !== null">
+      <b-list-group v-if="viewApostas.length > 0" class="listagem">
+        <b-list-group-item v-for="(a, i) in viewApostas" :key="i" :class="{'acertou': acertos.has(i - 1)}">
+          {{a.nameHome}} {{a.actualScoreHome}} ({{a.betScoreHome}})
+          x
+          ({{a.betScoreVisitor}}) {{a.actualScoreVisitor}} {{a.nameVisitor}}
         </b-list-group-item>
       </b-list-group>
-      <p v-else>Carregando apostas...</p>
+      <p v-else>O usuário não fez nenhuma aposta nesta rodada</p>
     </template>
   </div>
 </template>
@@ -37,56 +38,63 @@ export default {
       rodadaSelecionada: null,
       usuarioSelecionado: null,
       usuarios: null,
-      apostas: null,
+      viewApostas: null,
       mensagem: 'Carregando usuários...'
     }
   },
   computed: {
     acertos() {
-      const indices = this.apostas
-        .filter(r => r.betScoreHome === r.actualScoreHome && r.betScoreVisistor === r.actualScoreVisitor)
-        .map((r, i) => i)
+      const indices = new Set()
 
-      return new Set(indices)
+      for (let i = 0; i < this.viewApostas.length; i++) {
+        const r = this.viewApostas[i]
+
+        if (r.betScoreHome === r.actualScoreHome && r.betScoreVisitor === r.actualScoreVisitor) {
+          indices.add(i)
+        }
+      }
+
+      return indices
     }
   },
   methods: {
     ...mapActions([
       'buscarUsuarios',
-      'buscarApostas',
-      'buscarRodadasEncerradas'
-    ])
+      // 'buscarApostas',
+      // 'buscarRodadasEncerradas'
+    // ])
+  // },
+  // watch: {
+  //   async usuarioSelecionado() {
+  //     this.apostas = null
+      'buscarViewApostas'
+    ]),
+    async atualizar() {
+      if (this.usuarioSelecionado === null || this.rodadaSelecionada === null) {
+        return
+      }
+
+      this.viewApostas = null
+      this.mensagem = 'Carregando...'
+
+      try {
+        const apostas = await this.buscarViewApostas({
+          rodadaSelecionada: this.rodadaSelecionada,
+          usuarioSelecionado: this.usuarioSelecionado
+        })
+        this.viewApostas = apostas.filter(x => x.betScoreHome !== null)
+      } catch (err) {
+        this.mensagem = err + ''
+        this.usuarios = null
+      }
+    }
   },
   watch: {
     async usuarioSelecionado() {
-      this.apostas = null
-
-      try {
-        if (!!this.usuarioSelecionado && !!this.rodadaSelecionada) {
-          this.apostas = await this.buscarApostas({
-            usuario: this.usuarioSelecionado,
-            rodada: this.rodadaSelecionada
-          })
-        }
-      } catch (err) {
-        this.mensagem = err + ''
-        this.usuarios = null
-      }
+      this.atualizar()
     },
     async rodadaSelecionada() {
-      this.apostas = null
-
-      try {
-        if (!!this.usuarioSelecionado && !!this.rodadaSelecionada) {
-          this.apostas = await this.buscarApostas({
-            usuario: this.usuarioSelecionado,
-            rodada: this.rodadaSelecionada
-          })
-        }
-      } catch (err) {
-        this.mensagem = err + ''
-        this.usuarios = null
-      }
+      this.atualizar()
     }
   },
   async beforeMount() {
@@ -103,9 +111,7 @@ export default {
       return
     }
 
-    setTimeout(() => {
-      this.usuarioSelecionado = this.usuarios[0].id
-    }, 1000);
+    this.usuarioSelecionado = this.usuarios[0].id
   }
 }
 </script>
