@@ -17,7 +17,7 @@
 
     <template v-if="usuarios !== null && viewApostas !== null">
       <b-list-group v-if="viewApostas.length > 0" class="listagem">
-        <b-list-group-item v-for="(a, i) in viewApostas" :key="i" :class="{'acertou': acertos.has(i - 1)}">
+        <b-list-group-item v-for="(a, i) in viewApostas" :key="i" >
           {{a.nameHome}} {{a.actualScoreHome}} ({{a.betScoreHome}})
           x
           ({{a.betScoreVisitor}}) {{a.actualScoreVisitor}} {{a.nameVisitor}}

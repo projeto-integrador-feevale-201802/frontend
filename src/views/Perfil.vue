@@ -6,6 +6,9 @@
     <form v-else class="login" @submit.prevent="atualizarPerfil">
       <input-box texto="Nome" tipo="text" v-model="dados.name" />
       <input-box texto="E-mail" tipo="email" v-model="dados.email" apenasleitura="true" />
+      <input-box texto="Senha atual" tipo="password" v-model="dados.senhaatual" placeholder="Digite para alterar a senha" />
+      <input-box texto="Senha" tipo="password" v-model="dados.novasenha" placeholder="Digite para alterar a senha" />
+      <input-box texto="Confirmar Senha" tipo="password" v-model="dados.confsenha" placeholder="Digite para confirmar senha" />
       <error-box v-if="erros.length" :erros="erros" />
       <button type="submit" class="btn btn-primary cadastrar">Atualizar perfil</button>
     </form>
@@ -36,7 +39,10 @@ export default {
       dados: {
         name: '',
         email: '',
-        id: undefined
+        id: undefined,
+        novasenha: '',
+        confsenha: '',
+        senhaatual: ''
       },
       exibirModalSucesso: false,
       erros: []
@@ -50,9 +56,13 @@ export default {
     atualizarPerfil() {
       const data = {
         name: this.dados.name,
-        id: this.dados.id
+        id: this.dados.id,
+        password: this.dados.novasenha,
+        confpassword: this.dados.confsenha,
+        currentpassword: this.dados.senhaatual
       }
-      this.atualizarUsuario(data)
+      if (data.password === data.confpassword) {
+        this.atualizarUsuario(data)
         .then(() => {
           this.exibirModalSucesso = true
           this.erros = []
@@ -60,6 +70,10 @@ export default {
         .catch(erros => {
           this.erros = [erros]
         })
+      } else {
+        this.erros = ['As senhas não coincidem']
+      }
+
     }
   },
   async beforeMount() {
