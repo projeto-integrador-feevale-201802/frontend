@@ -12,6 +12,14 @@
       <button type="submit" class="btn btn-primary entrar">Recuperar</button>
     </form>
 
+    <b-modal
+      v-model="exibirModalSucesso"
+      @hidden="$router.push('/login')"
+      title="Sucesso"
+      ok-only>
+      Você receberá um e-mail com instruções para redefinir sua senha.
+    </b-modal>
+
   </div>
 </template>
 
@@ -28,7 +36,8 @@ export default {
   data() {
     return {
       email: '',
-      erros: []
+      erros: [],
+      exibirModalSucesso: false
     }
   },
   methods: {
@@ -39,6 +48,7 @@ export default {
       try {
         if (!!dados.email) {
           await this.recuperarLogin(dados)
+          this.exibirModalSucesso = true
         } else {
           this.erros = ['E-mail não preenchido']
         }
