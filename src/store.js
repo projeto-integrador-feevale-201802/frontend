@@ -187,5 +187,12 @@ export default new Vuex.Store({
 
       return res
     },
+    async recuperarLogin(_, dados) {
+      const res = await request('/user/start-password-recovery', dados)
+
+      if (!res.token) {
+        throw substituirErroGenerico(res.errors)
+      }
+    },
   }
 });

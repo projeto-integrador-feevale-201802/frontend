@@ -4,6 +4,7 @@ import { NOME_STORAGE_AUTH } from './config.json'
 import Home from './views/Home.vue';
 import Login from './views/Login.vue';
 import CadastrarUsuario from './views/CadastrarUsuario.vue';
+import EsqueciSenha from './views/EsqueciSenha.vue';
 import Perfil from './views/Perfil.vue';
 import VerApostas from './views/VerApostas.vue';
 import Apostar from './views/Apostar.vue';
@@ -35,6 +36,14 @@ export default new Router({
       path: '/cadastrar-usuario',
       name: 'cadastrar usuario',
       component: CadastrarUsuario,
+      meta: {
+        esconderMenu: true
+      },
+    },
+    {
+      path: '/esqueci-senha',
+      name: 'esqueci senha',
+      component: EsqueciSenha,
       meta: {
         esconderMenu: true
       },

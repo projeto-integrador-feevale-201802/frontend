@@ -12,9 +12,17 @@
       <button type="submit" class="btn btn-primary entrar">Entrar</button>
     </form>
 
-    <div class="centralizar-texto">
-      <a href="/cadastrar-usuario">Criar meu cadastro</a>
+    <div class="row">
+      <div class="centralizar-texto">
+        <a href="/cadastrar-usuario">Criar meu cadastro</a>
+      </div>
     </div>
+    <div class="row">
+      <div class="centralizar-texto">
+        <a href="/esqueci-senha">Esqueci minha senha</a>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -72,5 +80,6 @@ export default {
 
 .centralizar-texto {
   text-align: center;
+  width: 100%;
 }
 </style>
