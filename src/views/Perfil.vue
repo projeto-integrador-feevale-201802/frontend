@@ -68,7 +68,7 @@ export default {
           this.erros = []
         })
         .catch(erros => {
-          this.erros = [erros]
+          this.erros = erros
         })
       } else {
         this.erros = ['As senhas não coincidem']
