@@ -5,6 +5,7 @@ import Home from './views/Home.vue';
 import Login from './views/Login.vue';
 import CadastrarUsuario from './views/CadastrarUsuario.vue';
 import EsqueciSenha from './views/EsqueciSenha.vue';
+import Senha from './views/Senha.vue';
 import Perfil from './views/Perfil.vue';
 import VerApostas from './views/VerApostas.vue';
 import Apostar from './views/Apostar.vue';
@@ -44,6 +45,14 @@ export default new Router({
       path: '/esqueci-senha',
       name: 'esqueci senha',
       component: EsqueciSenha,
+      meta: {
+        esconderMenu: true
+      },
+    },
+    {
+      path: '/senha/:token',
+      name: 'senha',
+      component: Senha,
       meta: {
         esconderMenu: true
       },

@@ -196,5 +196,14 @@ export default new Vuex.Store({
 
       return res
     },
+    async alterarSenha(_, dados) {
+      const res = await request('/user/change-password', dados)
+
+      if (res.errors) {
+        throw substituirErroGenerico(res.errors)
+      }
+
+      return res
+    },
   }
 });
